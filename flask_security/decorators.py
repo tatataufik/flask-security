@@ -54,6 +54,7 @@ def _check_token():
     if request.get_json(silent=True):
         token = request.json.get(args_key, token)
 
+    print request.json
     user = _security.login_manager.token_callback(token)
 
     if user and user.is_authenticated():
@@ -66,9 +67,8 @@ def _check_token():
 
 
 def _check_http_auth():
-    auth = request.authorization or BasicAuth(username=None, password=None)
-    user = _security.datastore.find_user(email=auth.username)
-
+    auth = request.authorization or BasicAuth(username="", password="")
+    user = _security.datastore.get_user(auth.username)
     if user and utils.verify_and_update_password(auth.password, user):
         _security.datastore.commit()
         app = current_app._get_current_object()

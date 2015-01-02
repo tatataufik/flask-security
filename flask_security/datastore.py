@@ -174,6 +174,7 @@ class UserDatastore(object):
         """
         self.delete(user)
 
+import re
 
 class SQLAlchemyUserDatastore(SQLAlchemyDatastore, UserDatastore):
     """A SQLAlchemy datastore implementation for Flask-Security that assumes the
@@ -193,6 +194,8 @@ class SQLAlchemyUserDatastore(SQLAlchemyDatastore, UserDatastore):
                 return rv
 
     def _is_numeric(self, value):
+        if re.match(r"^\+\d+$",value):
+		return False
         try:
             int(value)
         except ValueError:
