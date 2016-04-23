@@ -200,7 +200,7 @@ def roles_accepted(*roles):
 def anonymous_user_required(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
-        if current_user.is_authenticated():
+        if current_user.is_authenticated:
             return redirect(utils.get_url(_security.post_login_view))
         return f(*args, **kwargs)
     return wrapper
